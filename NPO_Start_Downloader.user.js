@@ -5,6 +5,7 @@
 // @description Allows for NPO Start tv programs to be downloaded by right-clicking the video or using other tools.
 // @version 1.0
 // @icon http://i.imgur.com/XYzKXzK.png
+// @downloadURL https://github.com/Laurvin/NPO-Start-Downloader/raw/master/NPO_Start_Downloader.user.js
 // @include https://www.npo.nl/*
 // @include http://www.npo.nl/*
 // @grant GM_xmlhttpRequest
