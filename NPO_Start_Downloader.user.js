@@ -3,7 +3,7 @@
 // @namespace NPO Start Downloader
 // @author Laurvin
 // @description Allows for NPO Start tv programs to be downloaded by right-clicking the video or using other tools.
-// @version 1.0
+// @version 1.1
 // @icon http://i.imgur.com/XYzKXzK.png
 // @downloadURL https://github.com/Laurvin/NPO-Start-Downloader/raw/master/NPO_Start_Downloader.user.js
 // @include https://www.npo.nl/*
@@ -14,6 +14,8 @@
 // @require https://github.com/Sighery/SRQ/releases/download/v0.1.0/SerialRequestsQueue-0.1.0.js
 // @run-at document-idle
 // ==/UserScript==
+
+this.$ = this.jQuery = jQuery.noConflict(true);
 
 var queue = new SRQ();
 var video_prid = '';
@@ -27,6 +29,7 @@ $( document ).ready(function()
 	{
 		var video_id = window.location.href;
 		video_id = video_id.substring(video_id.lastIndexOf('/')+1);
+		console.log(video_id);
 		Downloader(video_id);
 	});
 	
@@ -54,6 +57,7 @@ $( document ).ready(function()
 			meta_response = meta_response.substring(0, meta_response.lastIndexOf('}')+1); // Remove ") //ep"
 			var video_meta_JSON = JSON.parse(meta_response);
 			video_prid = video_meta_JSON.prid;
+			console.log(video_prid);
 			
 			// Getting title, subtitle, and date and copying them to clipboard for file title.
 			var video_title = video_meta_JSON.titel;
@@ -62,6 +66,18 @@ $( document ).ready(function()
 
 			full_title = video_title + ' - ' + video_date;			
 			if (video_subtitle !== '' && video_subtitle != video_title) full_title += ' - ' + video_subtitle;
+			
+			// Below sanitize bit taken from and adapted https://github.com/parshap/node-sanitize-filename
+			var illegalRe = /[\/<>\\:\*\|":]/g;
+			var controlRe = /[\x00-\x1f\x80-\x9f]/g;
+			var reservedRe = /^\.+$/;
+			var replacement = ' - ';
+			
+			full_title = full_title
+			  .replace('?', '')
+        .replace(illegalRe, replacement)
+        .replace(controlRe, replacement)
+        .replace(reservedRe, replacement);		
 			
 			GM_setClipboard(full_title, "text");
 
@@ -94,6 +110,8 @@ $( document ).ready(function()
 		{
 			var token_JSON = JSON.parse(requested_obj.response.responseText);
 			token = token_JSON.token;
+			console.log(token);
+			console.log('http://ida.omroep.nl/app.php/' + video_prid + '?adaptive=no&token=' + token);
 
 			queue.add_to_queue(
 			{
@@ -144,6 +162,7 @@ $( document ).ready(function()
 			if (Hoog !== '') video_url = Hoog;
 			
 			video_url = video_url.substring(0, video_url.indexOf('?')); // Removing everything after '?'.
+			console.log(video_url);
 			
 			queue.add_to_queue(
 			{
@@ -175,6 +194,7 @@ $( document ).ready(function()
 			var video_url_JSON = JSON.parse(requested_obj.response.responseText);
 			download_url = video_url_JSON.url;
 			download_url = download_url.substring(0, download_url.indexOf('?')); // Removing everything after '?'.
+			console.log(download_url);
 
 			window.location.href = download_url;			
 		}
