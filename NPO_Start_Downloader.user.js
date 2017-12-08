@@ -3,7 +3,7 @@
 // @namespace NPO Start Downloader
 // @author Laurvin
 // @description Allows for NPO Start tv programs to be downloaded by right-clicking the video or using other tools.
-// @version 1.1
+// @version 1.2
 // @icon http://i.imgur.com/XYzKXzK.png
 // @downloadURL https://github.com/Laurvin/NPO-Start-Downloader/raw/master/NPO_Start_Downloader.user.js
 // @include https://www.npo.nl/*
@@ -71,13 +71,14 @@ $( document ).ready(function()
 			var illegalRe = /[\/<>\\:\*\|":]/g;
 			var controlRe = /[\x00-\x1f\x80-\x9f]/g;
 			var reservedRe = /^\.+$/;
-			var replacement = ' - ';
+			var replacement = '- ';
 			
 			full_title = full_title
 			  .replace('?', '')
         .replace(illegalRe, replacement)
         .replace(controlRe, replacement)
-        .replace(reservedRe, replacement);		
+        .replace(reservedRe, replacement)
+			  .replace('  ', ' '); // Remove any double spaces
 			
 			GM_setClipboard(full_title, "text");
 
