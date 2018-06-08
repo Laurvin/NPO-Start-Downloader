@@ -3,11 +3,13 @@
 // @namespace NPO Start Downloader
 // @author Laurvin
 // @description Allows for NPO Start tv programs to be downloaded by right-clicking the video or using other tools.
-// @version 1.2
+// @version 1.3
 // @icon http://i.imgur.com/XYzKXzK.png
 // @downloadURL https://github.com/Laurvin/NPO-Start-Downloader/raw/master/NPO_Start_Downloader.user.js
 // @include https://www.npo.nl/*
 // @include http://www.npo.nl/*
+// @include https://www.npostart.nl/*
+// @include http://www.npostart.nl/*
 // @grant GM_xmlhttpRequest
 // @grant GM_setClipboard
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
